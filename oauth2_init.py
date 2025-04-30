@@ -6,9 +6,15 @@ import base64
 import json
 import time
 from urllib.parse import urlencode
+from pathlib import Path
 
-CONSUMER_KEY = "dj0yJmk9YmVCQXIwcXNYQll6JmQ9WVdrOVUxUm9PVGxIYkVrbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTU1"
-CONSUMER_SECRET = "bcb49b0781877d2f9e9984dc76bbcbfe81da0c73"
+TOKEN_PATH = Path(__file__).parent / "token.json"
+
+with open(TOKEN_PATH, "r") as f:
+    token_data = json.load(f)
+
+CONSUMER_KEY = token_data.get("consumer_key")
+CONSUMER_SECRET = token_data.get("consumer_secret")
 REDIRECT_URI = "oob"  # CLI 模式用 oob
 
 # Step 1: 建立授權 URL

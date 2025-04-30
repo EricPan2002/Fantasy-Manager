@@ -12,14 +12,26 @@ from Refresh_auth import get_valid_token
 dotenv_path = Path(__file__).parent / ".env" #讀檔，找到.env
 load_dotenv(dotenv_path)
 
-# Yahoo OAuth 1.0 金鑰
+# OAuth 1.0 金鑰
 CONSUMER_KEY = os.environ.get("YAHOO_CONSUMER_KEY")
 CONSUMER_SECRET = os.environ.get("YAHOO_CONSUMER_SECRET")
-ACCESS_TOKEN = os.environ.get("YAHOO_ACCESS_TOKEN")
+#ACCESS_TOKEN = os.environ.get("YAHOO_ACCESS_TOKEN") #不確定會不會用到
 
+token = get_valid_token() #取得access token
 
+#取得個別球員數據，type:上週->lastweek,賽季->season
+url = f"https://fantasysports.yahooapis.com/fantasy/v2/player/454.p.5013/stats;type=season"
 
-# 你可以在這裡自動寫入 .env 檔
+#取得球隊陣容資訊，454.l.(league ID).t.(team number)
+#url = f"https://fantasysports.yahooapis.com/fantasy/v2/team/454.l.18599.t.1/roster/players"
+
+headers = {
+    "Authorization": f"Bearer {token}",
+    "Accept": "application/xml"
+}
+
+response = requests.get(url, headers=headers)
+print(response.text)
 #----------------------------要資料的部分----------------------------------------
 
 # 建立 OAuth 認證物件
